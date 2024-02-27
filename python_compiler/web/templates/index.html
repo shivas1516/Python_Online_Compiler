@@ -8,57 +8,67 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.css">
     <!-- CodeMirror Theme -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/theme/material-darker.min.css">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        /* Resetting default margin and padding */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #222020;
-            color: #333;
-            line-height: 1.6;
-        }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #222020;
+        color: #fff;
+        line-height: 1.6;
+        margin: 0;
+    }
 
-        header {
-            background-color: #3e798d; /* Dark background color */
-            color: #fff; /* White text color */
-            padding: 5px; /* Add padding for spacing */
-            display: flex; /* Use flexbox for layout */
-            justify-content: space-between; /* Align items with space between them */
-            align-items: center; /* Center items vertically */
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Add shadow for depth */
-        }
+    header {
+        background-color: #3e798d;
+        color: #fff;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
 
-        .logo img {
-            width: 120px; /* Adjust the logo width as needed */
-        }
+    .logo {
+        display: flex;
+        align-items: center;
+    }
 
-        nav ul {
-            list-style-type: none; /* Remove bullet points from the list */
-        }
+    nav ul {
+        list-style-type: none;
+        display: flex;
+        align-items: center;
+    }
 
-        nav ul li {
-            display: inline; /* Display list items inline */
-            margin-right: 20px; /* Add margin between list items */
-        }
+    nav ul li {
+        margin-right: 20px;
+    }
 
-        nav ul li a, .button {
-            text-decoration: none; /* Remove underline from links */
-            color: #fff; /* White text color */
-            font-size: 18px; /* Adjust font size as needed */
-            cursor: pointer;
-        }
+    nav ul li a, .button {
+        text-decoration: none;
+        color: #fff;
+        font-size: 18px;
+        cursor: pointer;
+        padding: 10px;
+        display: inline-block;
+        transition: all 0.3s ease;
+    }
 
-        nav ul li a:hover, .button:hover {
-            text-decoration: underline; /* Add underline on hover */
-        }
+    nav ul li a:hover, .button:hover {
+        transform: translateY(-3px);
+    }
 
-        #editor-pane,
-        #output-pane {
+    nav ul li a:focus, .button:focus {
+        outline: none;
+    }
+
+        #editor-pane, #output-pane {
             background-color: #222020;
             border-radius: 5px;
             margin: 20px;
@@ -66,14 +76,8 @@
 
         #output-pane #output {
             height: 160px;
-            width: 1480px;
+            width: 100%;
             overflow-y: auto;
-        }
-
-        .file-management,
-        .themes-preferences {
-            margin: 20px;
-            text-align: center;
         }
 
         .button {
@@ -81,18 +85,14 @@
             border: none;
             color: #fff;
             padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
             font-size: 16px;
-            margin-right: 10px;
             cursor: pointer;
             border-radius: 5px;
             transition: background-color 0.3s ease;
         }
 
         .button:hover {
-            background-color: #000000;
+            background-color: #1e1e1e;
         }
 
         select {
@@ -109,40 +109,146 @@
             margin-right: 10px;
         }
 
-        /* Adjust the height of the CodeMirror container */
         .CodeMirror {
-            height: 500px; /* Set the height as per your preference */
+            height: 500px;
         }
 
+        /* Sidebar Container */
+        #slider {
+            position: fixed;
+            top: 0;
+            right: -350px; 
+            width: 350px; 
+            height: 110%;
+            background-color: #222020;
+            z-index: 1000;
+            transition: right 0.3s ease; 
+        }
+
+        #slider.open {
+            right: 0; 
+        }
+
+        /* Sidebar Content */
+        #slider-content {
+            padding: 20px;
+            height: calc(100% - 60px); 
+        }
+
+        /* Close Button */
+        #slider-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: transparent;
+            color: #fff;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Textarea inside the Slider */
+        #slider-content textarea {
+            width: calc(100% - 4px); 
+            margin: 2px;
+            height: calc(100% - 100px); 
+            background-color: #222020;
+            resize: none; 
+            color: #fff; 
+            border: none; 
+            outline: none; 
+            padding: 10px; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Set font family */
+            font-size: 16px; 
+        }
+
+        /* Input Container for Textbox and Button */
+        .input-container {
+            margin-top: 10px;
+            display: flex; 
+        }
+
+        /* Textbox inside Input Container */
+        .input-container input[type="text"] {
+            flex: 1; 
+            height: 35px; 
+            margin: 3px;
+            background-color: #222020; 
+            color: #fff; 
+            border: 1px solid #ccc; 
+            border-radius: 5px; 
+            padding: 0 10px; 
+        }
+
+        /* Button inside Input Container */
+        .input-container button {
+            width: 40px; 
+            height: 35px; 
+            background-color: #ddd; 
+            border: none; 
+            cursor: pointer; 
+            border-radius: 0 5px 5px 0; 
+        }
+
+        @media only screen and (max-width: 768px) {
+        header {
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .logo img {
+            width: 100px;
+        }
+
+        nav ul {
+            margin-top: 10px;
+        }
+
+        nav ul li {
+            margin-right: 10px;
+        }
+    }
     </style>
 </head>
 <body>
-
 <header>
     <div class="logo">
         <label style="color: #222020; font-weight: bold; font-size: 20px;"> Python Compiler </label>
     </div>
     <nav>
         <ul>
-            <button type="submit" class="button" id="run-code" form="editor-form"><i class="fas fa-play"></i> Run Code</button>
-            <li><a href="#" id="download-link"><i class="fas fa-download"></i> Download</a></li>
+            <li><button type="submit" class="button" id="run-code" form="editor-form"><i class="fas fa-play"></i> Run Code</button></li>
+            <li><button type="submit" class="button" id="download-link"><i class="fas fa-download"></i> Download</button></li>
+            <li><button type="button" class="button" id="slider-trigger"><i class="fas fa-robot"></i> AI Assistant</button></li>
         </ul>
     </nav>
 </header>
-<form id="editor-form" action="{%url 'run_code' %}" method="post">
+
+<div id="slider"> 
+    <div id="slider-content">
+        <h2>AI Assistant</h2>
+        <form id="ai-assistant-form" method="post">
+        <textarea id="ai-output" rows="5" cols="50" style="color: #fff; background-color: #222020;" placeholder='This Feature is in Development!' disabled>{{ response }}</textarea>
+        <div class="input-container">
+            <input type="text" id="user-input" style="color: #fff; background-color: #222020;" placeholder="Type your qurey...">
+            <button type="submit" id="submit-message"><i class="fas fa-paper-plane"></i></button>
+        </div>
+        <button id="slider-close" class="button">X</button>
+    </div>
+</div>
+
+<form id="editor-form" action="{% url 'run_code' %}" method="post">
     {% csrf_token %}
     <div id="editor-pane">
-        <textarea type='text' id="code" name="code">{{code}}</textarea>
+        <textarea type='text' id="code" name="code">{{ code }}</textarea>
     </div>
 
     <div id="output-pane">
         <label style="color: #3e798d;">Console</label>
-        <textarea type="text" id="output" name="output" readonly class="output-textarea" style="color: #fff; background-color: #222020;">{{output}}</textarea>
+        <textarea type="text" id="output" name="output" readonly class="output-textarea" style="color: #fff; background-color: #222020;">{{ output }}</textarea>
     </div>
-
-    
 </form>
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.js"></script>
@@ -163,6 +269,16 @@
             matchBrackets: true
         });
 
+        document.getElementById('slider-trigger').addEventListener('click', function () {
+            var slider = document.getElementById('slider');
+            slider.classList.toggle('open');
+        });
+
+        document.getElementById('slider-close').addEventListener('click', function () {
+            var slider = document.getElementById('slider');
+            slider.classList.remove('open');
+        });
+
         document.getElementById('download-link').addEventListener('click', function () {
             var codeContent = codeEditor.getValue();
             var blob = new Blob([codeContent], { type: 'text/plain' });
@@ -172,7 +288,6 @@
             a.click();
             window.URL.revokeObjectURL(a.href);
         });
-
     });
 </script>
 </body>
