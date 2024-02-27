@@ -1,16 +1,14 @@
 {
-    "builds": [
+  "builds": [{
+      "src": "python_compiler/wsgi.py",
+      "use": "@ardnt/vercel-python-wsgi",
+      "config": { "maxLambdaSize": "15mb" }
+  }],
+  "routes": [
       {
-        "src": "python_compiler/wsgi.py",  
-        "use": "@vercel/python" ,
-        "config": { "maxLambdaSize": "15mb" , "runtime": "python3.9" }
+          "src": "/(.*)",
+          "dest": "python_compiler/wsgi.py"
       }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "python_compiler/wsgi.py"
-      }
-    ]
-  }
+  ]
+}
   
