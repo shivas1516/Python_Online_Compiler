@@ -1,2 +1,3 @@
-# Python_Online_Compiler_django
-The Python Online Compiler with Django is a web application designed to provide users with the ability to write, compile, and execute Python code directly within a web browser without the need for any local installation of Python interpreter 
+# Python Online Compiler with Django
+
+The Python Online Compiler with Django is a project created for learning and hands-on experience purposes in Django and Gemini. It provides a straightforward web application for writing, compiling, and executing Python code directly in the browser. This project is a testament to the creator's journey in Django and Gemini, while also serving as a useful tool for Python learners.

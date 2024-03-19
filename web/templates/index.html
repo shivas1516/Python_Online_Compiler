@@ -151,7 +151,7 @@
         #slider-content textarea {
             width: calc(100% - 4px); 
             margin: 2px;
-            height: calc(100% - 100px); 
+            height: 560px; 
             background-color: #222020;
             resize: none; 
             color: #fff; 
@@ -164,7 +164,7 @@
 
         /* Input Container for Textbox and Button */
         .input-container {
-            margin-top: 10px;
+            margin-bottom: 5px;
             display: flex; 
         }
 
@@ -228,12 +228,14 @@
 <div id="slider"> 
     <div id="slider-content">
         <h2>AI Assistant</h2>
-        <form id="ai-assistant-form" method="post">
-        <textarea id="ai-output" rows="5" cols="50" style="color: #fff; background-color: #222020;" placeholder='This Feature is in Development!' disabled>{{ response }}</textarea>
-        <div class="input-container">
-            <input type="text" id="user-input" style="color: #fff; background-color: #222020;" placeholder="Type your qurey...">
-            <button type="submit" id="submit-message"><i class="fas fa-paper-plane"></i></button>
-        </div>
+        <form id="ai-assistant-form" method="post" action="{% url 'code_generation' %}">
+            {% csrf_token %}
+            <textarea id="response" rows="5" cols="50" style="color: #fff; background-color: #222020;" placeholder='{{ response }}' disabled>{{ response }}</textarea>
+            <div class="input-container">
+                <input type="text" id="user-input" name="user-input" style="color: #fff; background-color: #222020;" placeholder="Type your query...">
+                <button type="submit" id="submit-message"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </form>
         <button id="slider-close" class="button">X</button>
     </div>
 </div>
@@ -249,6 +251,7 @@
         <textarea type="text" id="output" name="output" readonly class="output-textarea" style="color: #fff; background-color: #222020;">{{ output }}</textarea>
     </div>
 </form>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.js"></script>
@@ -269,24 +272,32 @@
             matchBrackets: true
         });
 
-        document.getElementById('slider-trigger').addEventListener('click', function () {
-            var slider = document.getElementById('slider');
+        document.getElementById('run-code').addEventListener('click', function () {
+            document.getElementById('editor-form').submit();
+        });
+
+        // Get references to DOM elements
+        var sliderTrigger = document.getElementById('slider-trigger');
+        var sliderClose = document.getElementById('slider-close');
+        var slider = document.getElementById('slider');
+
+        // Add event listener for slider trigger button
+        sliderTrigger.addEventListener('click', function () {
             slider.classList.toggle('open');
         });
 
-        document.getElementById('slider-close').addEventListener('click', function () {
-            var slider = document.getElementById('slider');
+        // Add event listener for slider close button
+        sliderClose.addEventListener('click', function () {
             slider.classList.remove('open');
         });
 
-        document.getElementById('download-link').addEventListener('click', function () {
-            var codeContent = codeEditor.getValue();
-            var blob = new Blob([codeContent], { type: 'text/plain' });
-            var a = document.createElement('a');
-            a.href = window.URL.createObjectURL(blob);
-            a.download = 'code.py';
-            a.click();
-            window.URL.revokeObjectURL(a.href);
+        // Add event listener for AI assistant form submission
+        document.getElementById('ai-assistant-form').addEventListener('submit', function () {
+            // Check if the slider is open
+            if (slider.classList.contains('open')) {
+                // Close the slider
+                slider.classList.remove('open');
+            }
         });
     });
 </script>
