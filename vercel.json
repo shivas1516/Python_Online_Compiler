@@ -1,4 +1,5 @@
 {
+    "version": 2,  
     "builds": [
       {
         "src": "python_compiler/wsgi.py",
