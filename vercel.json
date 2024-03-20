@@ -1,7 +1,7 @@
 {
     "builds": [
       {
-        "src": "python_complier/wsgi.py",
+        "src": "python_compiler/wsgi.py",
         "use": "@vercel/python",
         "config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
       }
@@ -9,7 +9,7 @@
     "routes": [
       {
         "src": "/(.*)",
-        "dest": "python_complier/wsgi.py"
+        "dest": "python_compiler/wsgi.py"
       }
     ]
 }
