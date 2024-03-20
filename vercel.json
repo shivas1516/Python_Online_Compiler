@@ -1,5 +1,4 @@
 {
-    "version": 2,
     "builds": [
       {
         "src": "python_complier/wsgi.py",
@@ -13,5 +12,5 @@
         "dest": "python_complier/wsgi.py"
       }
     ]
-  }
+}
   
